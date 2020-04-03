@@ -38,12 +38,12 @@ public class AdService {
         for (String location : locations) {
             redisTemplate.opsForSet().add("idx:req:" + location, id);
         }
-        redisTemplate.opsForValue().set("idx:sex:" + sexType.name().toLowerCase(), id);
+        redisTemplate.opsForSet().add("idx:sex:" + sexType.name().toLowerCase(), id);
 
         double avg = AVERAGE_PER_1K.containsKey(ecpmType) ? AVERAGE_PER_1K.get(ecpmType) : 1;
         double rvalue = toEcpm(ecpmType, AVERAGE, avg, value);
 
-        redisTemplate.opsForSet().add("type:", id, ecpmType.name().toLowerCase());
+        redisTemplate.opsForHash().put("type:", id, ecpmType.name().toLowerCase());
         redisTemplate.opsForZSet().add("idx:ad:value", id, rvalue);
         redisTemplate.opsForZSet().add("ad:base_value", id, value);
     }
