@@ -64,11 +64,17 @@ public class AdServiceTest {
 
         for (int i = 0; i < 10; i++) {
             adService.indexAd(
-                    UUID.randomUUID().toString(),
+                    i + "",
                     locations[i],
                     sexEnums[i],
                     ecpmEnums[i],
                     Math.round(100 * Math.random()));
         }
+    }
+
+    @Test
+    public void matchedAds() {
+        String[] locations = {"广州", "花都区"};
+        adService.matchedAds(locations, SexEnum.WOMAN);
     }
 }
