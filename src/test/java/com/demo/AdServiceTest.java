@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.UUID;
-
 /**
  * create on 2020-04-01
  */
@@ -68,13 +66,28 @@ public class AdServiceTest {
                     locations[i],
                     sexEnums[i],
                     ecpmEnums[i],
-                    Math.round(100 * Math.random()));
+                    Math.round(10 * Math.random()));
         }
     }
 
     @Test
     public void matchedAds() {
         String[] locations = {"广州", "花都区"};
-        adService.matchedAds(locations, SexEnum.WOMAN);
+        String bestId = adService.matchedAds(locations, SexEnum.WOMAN);
+        System.out.println(bestId);
+    }
+
+    @Test
+    public void matchedAds1() {
+        String[] locations = {"深圳", "深圳北站"};
+        String bestId = adService.matchedAds(locations, SexEnum.MAN);
+        System.out.println(bestId);
+    }
+
+    @Test
+    public void matchedAds2() {
+        String[] locations = {"深圳", "广州"};
+        String bestId = adService.matchedAds(locations, SexEnum.WOMAN);
+        System.out.println(bestId);
     }
 }

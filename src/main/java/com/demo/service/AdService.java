@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -36,6 +37,12 @@ public class AdService {
     public void indexAd(
             String id, String[] locations, SexEnum sexType,
             EcpmEnum ecpmType, double value) {
+
+        if (StringUtils.isEmpty(id) || locations == null ||
+                locations.length == 0 || sexType == null || ecpmType == null) {
+            throw new RuntimeException("参数为空");
+        }
+
         redisTemplate.setEnableTransactionSupport(true);
         redisTemplate.multi();
         for (String location : locations) {
@@ -94,6 +101,7 @@ public class AdService {
         userFeatures.add(sexType.name().toLowerCase());
         String bestAdId = "";
         double bestAdIdRValue = .0;
+        Map<String,Double> resultMap = new HashMap<>();
         for (List<String> list : allList) {
             List<String> subList = list.subList(2, list.size());
             double featuresSize = userFeatures.size();
@@ -103,6 +111,7 @@ public class AdService {
                 bestAdId = list.get(0);
                 bestAdIdRValue = newValue;
             }
+            resultMap.put(list.get(0),newValue);
         }
         return bestAdId;
     }
