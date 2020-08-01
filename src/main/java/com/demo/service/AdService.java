@@ -18,7 +18,7 @@ import java.util.*;
 public class AdService {
 
     //用于存储广告每一千次展示的平均点击次数或平均展示次数
-    private Map<EcpmEnum, Double> AVERAGE_PER_1K = new HashMap<>();
+    private Map<EcpmEnum, Double> AVERAGE_PER_1K = new EnumMap<>(EcpmEnum.class);
     private static final Integer AVERAGE = 1000;
 
     @Autowired
@@ -101,7 +101,7 @@ public class AdService {
         userFeatures.add(sexType.name().toLowerCase());
         String bestAdId = "";
         double bestAdIdRValue = .0;
-        Map<String,Double> resultMap = new HashMap<>();
+        Map<String, Double> resultMap = new HashMap<>();
         for (List<String> list : allList) {
             List<String> subList = list.subList(2, list.size());
             double featuresSize = userFeatures.size();
@@ -111,7 +111,7 @@ public class AdService {
                 bestAdId = list.get(0);
                 bestAdIdRValue = newValue;
             }
-            resultMap.put(list.get(0),newValue);
+            resultMap.put(list.get(0), newValue);
         }
         return bestAdId;
     }
